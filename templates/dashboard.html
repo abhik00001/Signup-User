@@ -39,6 +39,12 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+        .table-responsive-custom {
+      overflow-x: auto;
+      max-width: 100%;
+      border: 1px solid #dee2e6;
+    }
+     
     </style>
 
 
@@ -59,8 +65,8 @@
         {% endfor %}
         {% endif %}
         <h2 style="text-align: center;">Dashboard</h2>
-       <div >
-        <table class="table">
+       <div class="table-responsive-custom" >
+        <table class="table" >
             <thead>
                 <tr>
                     <th scope="col">User</th>
