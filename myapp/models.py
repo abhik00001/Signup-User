@@ -14,3 +14,16 @@ class CustomUser(AbstractUser,PermissionsMixin):
 
     def __str__(self):
         return self.username
+    
+class blog(models.Model):
+    title = models.CharField(max_length=100, blank=True,null=True)
+    blog_image = models.ImageField(upload_to="blogPic")
+    category= models.CharField(max_length=150, blank=True,null=True)
+    summary = models.CharField( max_length=150, blank=True,null=True)
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    Content = models.TextField(blank=True,null=True)
+    is_draft = models.BooleanField(default=False)
+
+    
+
+    
