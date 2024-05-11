@@ -22,7 +22,7 @@ import sys
   
 scopes = ['https://www.googleapis.com/auth/calendar']
 
-credentials = pickle.load(open("C:/Users/91991/OneDrive/Desktop/assignment/token.pkl", "rb"))
+credentials = pickle.load(open("D:/projects/assignment/assignment/token.pkl", "rb"))
 
 
 # Create your views here.
