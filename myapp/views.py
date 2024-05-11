@@ -11,7 +11,8 @@ from django.contrib.auth.decorators import login_required
 from googleapiclient.discovery import build
 # from google_auth_oauthlib.flow import InstalledAppFlow
 import pickle
-# import pytz
+import pytz
+import json
 # from google.oauth2.credentials import Credentials
 # import sys
 
@@ -196,7 +197,12 @@ def confirm_appointment(request):
             doctor = request.POST.get("doctor_firstname")
             speciality = request.POST.get("speciality")
             date = request.POST.get("date")
+
             timezone = 'Asia/Kolkata'
+
+            # india_timezone = pytz.timezone('Asia/Kolkata')
+            # Serialize timezone object to JSON
+            # timezone_json = json.dumps({'timezone': india_timezone.zone})
             email= request.POST.get("email")
 
 
