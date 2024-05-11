@@ -159,7 +159,6 @@
 </head>
 
 <body class="text-center">
-
     <div class="container">
         {% if messages %}
         {% for message in messages %}
@@ -207,6 +206,7 @@
 
     </div>
 
+    <!-- form blog -->
     {%if request.user.user_type == "doctor"%}
     <div class="container">
         <h2 style="text-align: center;">Post Blog</h2>
@@ -270,6 +270,7 @@
     </div>
     {% endif %}
 
+    <!-- draft  -->
     {% if draft_data %}
     <div class="container">
         <h2 style="text-align: center; ">Drafts</h2>
@@ -310,73 +311,151 @@
     </div>
     {% endif %}
 
+
+    <!-- appointments -->
+    {% if appointment_data|length != 0 %}
+
     <div class="container">
-        <h2 style="text-align: center; ">Blogs</h2>
+
+        <h2>Appointments</h2>
         <hr style="margin-bottom: 20px;">
-        <div class="row mb-2">
-            {% for blogs in blog_data %}
-            <div class="col-md-6">
-                <div
-                    class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                    <div class="col p-4 d-flex flex-column position-static" id="blog_tag">
-                        <strong class="d-inline-block mb-2 text-primary">{{blogs.title}}</strong>
-                        <h3 class="mb-0">{{blogs.category}}</h3>
-                        <div class="mb-1 text-muted">{{blogs.summary|truncatewords:15}}</div>
-                        <p class="half_content card-text mb-auto">{{blogs.Content|truncatewords:20}}</p>
-                        <p class="full_content card-text mb-auto " style="display: none;">{{blogs.Content}}</p>
-                        <a href="#" class="continue_reading" style="width: 100%;">Continue Reading</a>
-                        <hr>
+        <div class="table-responsive-custom">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Patient</th>
+                        <th scope="col">Doctor's Name</th>
+                        <th scope="col">Appointment Date</th>
+                        <th scope="col">Appointment Time</th>
+                        <th scope="col">End Time</th>
+                        <th scope="col">Action</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                {% for appointments in appointment_data %}
+                <tbody style="margin-top:12px ;">
+                    <tr>
+                        <th scope="row">{{appointments.user}}</th>
+                        <td>{{appointments.doctor.first_name}} {{appointments.doctor.last_name}}</td>
+                        <td>{{appointments.date}}</td>
+                        <td>{{appointments.start_time}}</td>
+                        <td>{{appointments.end_time }}</td>
+                        <td><a href="/cancel_appointment/{{appointments.id}}">Cancel Appointment</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {% endif %}
+
+    <!-- Events -->
+
+
+
+    <!-- blog port -->
+
+    <div style="display: flex; justify-content: space-around;">
+        <!-- blog -->
+        {% if request.user.user_type == "patient" %}
+        <div class="container" style="max-width: 63%; float: left;">
+            {% else %}
+            <div class="container" style="max-width: 100%;">
+                {% endif %}
+                <h2 style="text-align: center; ">Blogs</h2>
+                <hr style="margin-bottom: 20px;">
+                <div class="row mb-2">
+                    {% for blogs in blog_data %}
+                    <div class="col-md-6" style="width: 100%;">
+                        <div
+                            class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                            <div class="col p-4 d-flex flex-column position-static" id="blog_tag">
+                                <strong class="d-inline-block mb-2 text-primary">{{blogs.title}}</strong>
+                                <h3 class="mb-0">{{blogs.category}}</h3>
+                                <div class="mb-1 text-muted">{{blogs.summary|truncatewords:15}}</div>
+                                <p class="half_content card-text mb-auto">{{blogs.Content|truncatewords:20}}</p>
+                                <p class="full_content card-text mb-auto " style="display: none;">{{blogs.Content}}</p>
+                                <a href="#" class="continue_reading" style="width: 100%;">Continue Reading</a>
+                                <hr>
+                            </div>
+                            <div class="col-auto d-lg-block" id="media-img">
+                                <img src="/media/{{blogs.blog_image}}" class="bd-placeholder-img" width="200"
+                                    height="250"></img>
+                            </div>
+                            <hr>
+                            {% if blogs.author_id == request.user.id %}
+                            <a href="/delete_blog/{{blogs.id}}" style="width: 30%; margin-bottom: 10px;"
+                                type="submit">Delete Blog</a>
+                            {% endif %}
+                        </div>
                     </div>
-                    <div class="col-auto d-lg-block" id="media-img">
-                        <img src="/media/{{blogs.blog_image}}" class="bd-placeholder-img" width="200"
-                            height="250"></img>
-                    </div>
-                    <hr>
-                    {% if blogs.author_id == request.user.id %}
-                    <a href="/delete_blog/{{blogs.id}}" style="width: 30%; margin-bottom: 10px;" name="save_draft"
-                        type="submit">Delete Blog</a>
-                    {% endif %}
+                    {% endfor %}
                 </div>
             </div>
-            {% endfor %}
+
+            <!-- doctor's list  -->
+            {% if request.user.user_type == "patient" %}
+            <div class="container" style="max-width: 30%; float: left; height: fit-content; flex-wrap: wrap; flex-direction: row;">
+                <h2 style="text-align: center; ">Doctor's List</h2>
+                <hr style="margin-bottom: 20px;">
+                <div class="row mb-2">
+                    {% for doctor in doctors %}
+                    <div class="col-md-6" style="width: 100%;">
+                        <div style="display: flex; justify-content: space-evenly; flex-wrap: wrap;">
+                            <div class="col-auto d-lg-block" id="doctor-img"
+                                style="display: inline;width: fit-content;">
+                                <img src="/media/{{doctor.profile_pic}}" class="bd-placeholder-img" width="60"
+                                    height="60"></img>
+                            </div>
+                            <strong style="text-align: center; ">{{doctor.first_name}} {{doctor.last_name}}</strong>
+                            <a href="/book_appointment/{{doctor.id}}">Book Appointment</a>
+                        </div>
+                        <hr>
+                    </div>
+                        {% endfor %}
+                </div>
+            </div>
+            {% endif %}
         </div>
+    </div>
 
 
-        <script>
-            let val = document.getElementById("alert")
-            setTimeout(() => {
-                val.style.display = "none";
-            }, "2000");
+    <script>
+        let val = document.getElementById("alert")
+        setTimeout(() => {
+            val.style.display = "none";
+        }, "2000");
 
 
-            // JavaScript
-            document.addEventListener("DOMContentLoaded", function () {
-                const continueReadingButtons = document.querySelectorAll('.continue_reading');
+        // JavaScript
+        document.addEventListener("DOMContentLoaded", function () {
+            const continueReadingButtons = document.querySelectorAll('.continue_reading');
 
-                continueReadingButtons.forEach(button => {
-                    button.addEventListener('click', function (e) {
-                        e.preventDefault()
-                        const blogContainer = this.parentElement;
-                        const truncatedContent = blogContainer.querySelector('.half_content');
-                        const fullContent = blogContainer.querySelector('.full_content');
+            continueReadingButtons.forEach(button => {
+                button.addEventListener('click', function (e) {
+                    e.preventDefault()
+                    const blogContainer = this.parentElement;
+                    const truncatedContent = blogContainer.querySelector('.half_content');
+                    const fullContent = blogContainer.querySelector('.full_content');
 
-                        if (this.innerHTML == "Continue Reading") {
-                            truncatedContent.style.display = 'none';
-                            fullContent.style.display = 'block';
-                            this.innerHTML = 'Hide';
-                        }
-                        else {
-                            truncatedContent.style.display = 'block';
-                            fullContent.style.display = 'none';
-                            this.innerHTML = 'Continue Reading';
-                        }
+                    if (this.innerHTML == "Continue Reading") {
+                        truncatedContent.style.display = 'none';
+                        fullContent.style.display = 'block';
+                        this.innerHTML = 'Hide';
+                    }
+                    else {
+                        truncatedContent.style.display = 'block';
+                        fullContent.style.display = 'none';
+                        this.innerHTML = 'Continue Reading';
+                    }
 
-                    });
                 });
             });
+        });
 
 
-        </script>
+    </script>
 
 </body>
 

@@ -6,6 +6,7 @@ urlpatterns = [
     path("",views.login_page,name="login_page"),
     path("signup",views.signup,name="signup"),
     path("dashboard",views.dashboard,name="dashboard"),
+    #user
     path("add_user",views.add_user),
     path("login_user",views.login_user),
     path("logout_user",views.logout_user),
@@ -16,4 +17,9 @@ urlpatterns = [
     path("edit_blog/<int:id>",views.edit_blog),
     path("delete_blog/<int:id>",views.delete_blog),
     path("update_draft/<int:id>",views.update_draft),
+
+    #doctor
+    path("book_appointment/<int:id>",views.book_appointment),
+    path("confirm_appointment",views.confirm_appointment),
+    path("cancel_appointment/<int:id>",views.cancel_appointment),
 ]
